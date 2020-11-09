@@ -1,11 +1,11 @@
-git-server CHANGELOG
+chef-git-server CHANGELOG
 =========================
 
-This file is used to list changes made in each version of the git-server cookbook.
+This file is used to list changes made in each version of the chef-git-server cookbook.
 
 0.1.0
 -----
-- [Brian Hartsock] - Initial release of git-server
+- [Brian Hartsock] - Initial release of chef-git-server
 
 
 0.1.1

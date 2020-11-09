@@ -1,4 +1,4 @@
-name             'git-server'
+name             'chef-git-server'
 maintainer       'Brian Hartsock'
 maintainer_email 'brian.hartsock@gmail.com'
 license          'All rights reserved'

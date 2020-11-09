@@ -1,4 +1,4 @@
-git-server Cookbook
+chef-git-server Cookbook
 ========================
 Installs a simple, SSH based Git server.  For example, if my server hostname is `git.remoteserver.com` and I created the repository `git-is-awesome`, I can use it as follows:
 
@@ -22,7 +22,7 @@ Currently only tested on Ubuntu 14.04.  Please provide PR's for any other distro
 * Ubuntu
 
 #### Cookbooks
-The following external cookbook dependencies are required for git-server:
+The following external cookbook dependencies are required for chef-git-server:
 
 * git
 * users
@@ -31,7 +31,7 @@ The following external cookbook dependencies are required for git-server:
 Attributes
 ----------
 
-#### git-server::repositories
+#### chef-git-server::repositories
 <table>
   <tr>
     <th>Key</th>
@@ -40,7 +40,7 @@ Attributes
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['git-server']['repositories']</tt></td>
+    <td><tt>['chef-git-server']['repositories']</tt></td>
     <td>Array of strings</td>
     <td>Names of bare repositories to initialize</td>
     <td><tt>[]</tt></td>
@@ -50,15 +50,15 @@ Attributes
 Usage
 -----
 
-####  git-server::default
+####  chef-git-server::default
 
-Include `git-server` in your node's `run_list` and a list of:
+Include `chef-git-server` in your node's `run_list` and a list of:
 
 ```json
 {
   "name":"my_node",
   "run_list": [
-    "recipe[git-server]"
+    "recipe[chef-git-server]"
   ],
 }
 ```
@@ -66,7 +66,7 @@ Configure any repositories you want to be created:
 
 ```ruby
 default_attributes(
-  "git-server" => {
+  "chef-git-server" => {
     "repositories" => ['chef-brianhartsock']
 })
 ```
