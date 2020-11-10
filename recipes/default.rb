@@ -20,13 +20,17 @@ end
 
 # Pulls all SSH Keys out of users databag and adds to the git user
 # authorized_keys.  See users cookbook for details"
-users = data_bag(node['chef-git-server']['user_data_bag'])
-ssh_keys = ''
-users.each do |username|
-  user = data_bag_item(node['chef-git-server']['user_data_bag'], node['chef-git-server']['username_data_bag'])
-  Array(user[node['chef-git-server']['ssh_keys_data_bag']]).each do |ssh_key|
-    ssh_keys << ssh_key + "\n"
+begin
+  users = data_bag(node['chef-git-server']['user_data_bag'])
+  ssh_keys = ''
+  users.each do |username|
+    user = data_bag_item(node['chef-git-server']['user_data_bag'], node['chef-git-server']['username_data_bag'])
+    Array(user[node['chef-git-server']['ssh_keys_data_bag']]).each do |ssh_key|
+      ssh_keys << ssh_key + "\n"
+    end
   end
+rescue
+  ssh_keys = ''
 end
 
 file File.join(node['chef-git-server']['home'], File.join('.ssh', 'authorized_keys')) do
