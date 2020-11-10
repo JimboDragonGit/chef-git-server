@@ -6,7 +6,7 @@
 
 # Create git user on server
 user node['chef-git-server']['user'] do
-  supports :manage_home => true
+  manage_home true
   comment node['chef-git-server']['user_comment']
   home node['chef-git-server']['home']
   shell node['chef-git-server']['shell']
