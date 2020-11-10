@@ -11,3 +11,4 @@ default['chef-git-server']['user_comment'] = "ssh_keys"
 default['chef-git-server']['user_data_bag'] = "user"
 default['chef-git-server']['username_data_bag'] = "username"
 default['chef-git-server']['ssh_keys_data_bag'] = "ssh_keys"
+default['chef-git-server']['compile_time'] = false

@@ -10,12 +10,14 @@ user node['chef-git-server']['user'] do
   comment node['chef-git-server']['user_comment']
   home node['chef-git-server']['home']
   shell node['chef-git-server']['shell']
+  compile_time node['chef-git-server']['compile_time']
 end
 
 directory File.join(node['chef-git-server']['home'], ".ssh") do
   user node['chef-git-server']['user']
   group node['chef-git-server']['group']
   mode "700"
+  compile_time node['chef-git-server']['compile_time']
 end
 
 # Pulls all SSH Keys out of users databag and adds to the git user
@@ -38,6 +40,7 @@ file File.join(node['chef-git-server']['home'], File.join('.ssh', 'authorized_ke
   group node['chef-git-server']['group']
   mode "600"
   content ssh_keys
+  compile_time node['chef-git-server']['compile_time']
 end
 
 # Setup repositories defined as node attributes
@@ -47,5 +50,6 @@ node['chef-git-server']['repositories'].each do |repository_name|
     group node['chef-git-server']['group']
     cwd node['chef-git-server']['home']
     creates File.join(node['chef-git-server']['home'], "#{repository_name}.git")
+    compile_time node['chef-git-server']['compile_time']
   end
 end
