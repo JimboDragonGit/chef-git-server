@@ -26,8 +26,8 @@ begin
   users = data_bag(node['chef-git-server']['user_data_bag'])
   ssh_keys = ''
   users.each do |username|
-    user = data_bag_item(node['chef-git-server']['user_data_bag'], node['chef-git-server']['username_data_bag'])
-    Array(user[node['chef-git-server']['ssh_keys_data_bag']]).each do |ssh_key|
+    user = data_bag_item(node['chef-git-server']['user_data_bag'], username)
+    user[node['chef-git-server']['ssh_keys_data_bag']].each do |ssh_key|
       ssh_keys << ssh_key + "\n"
     end
   end
