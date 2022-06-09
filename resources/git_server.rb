@@ -43,6 +43,8 @@ action_class do
 
   require 'fileutils'
 
+  attr_accessor :sshkeys
+
   def create_server
     # Create git user on server
     user new_resource.user do
@@ -59,13 +61,11 @@ action_class do
     end
   end
 
-  def update_ssh_users
-    # Pulls all SSH Keys out of users databag and adds to the git user
-    # authorized_keys.  See users cookbook for details"
+  def sshkeys
     begin
       Chef::Log.warn("Fetch git ssh users")
+      @ssh_keys = ''
       users = data_bag(new_resource.user_data_bag)
-      ssh_keys = ''
       Chef::Log.warn("Fetch git ssh users #{users}")
       users.each do |username|
         Chef::Log.warn("Fetch git ssh keys for user #{username}")
@@ -76,12 +76,18 @@ action_class do
         Chef::Log.warn("Fetch git ssh keys for user #{username} = values #{user.values}")
         user[new_resource.ssh_keyname_data_bag].each do |ssh_key|
           Chef::Log.warn("Adding git ssh keys for user #{username} = #{user} with value #{ssh_key}")
-          ssh_keys << ssh_key + "\n"
+          @ssh_keys << ssh_key + "\n"
         end
       end
-    rescue
-      ssh_keys = ''
+    rescue Exception => e
+      @ssh_keys = "Error running sshkeys with exception #{e.message}}"
     end
+    @ssh_keys
+  end
+
+  def update_ssh_users
+    # Pulls all SSH Keys out of users databag and adds to the git user
+    # authorized_keys.  See users cookbook for details"
 
     file ::File.join(new_resource.home, ::File.join('.ssh', 'authorized_keys')) do
       owner new_resource.user
