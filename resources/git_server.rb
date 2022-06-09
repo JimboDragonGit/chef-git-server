@@ -51,14 +51,12 @@ action_class do
       comment new_resource.user_comment
       home new_resource.home
       shell new_resource.shell
-      compile_time new_resource.compile_time
     end
 
     directory ::File.join(new_resource.home, ".ssh") do
       user new_resource.user
       group new_resource.group
       mode "700"
-      compile_time new_resource.compile_time
     end
   end
 
@@ -66,11 +64,16 @@ action_class do
     # Pulls all SSH Keys out of users databag and adds to the git user
     # authorized_keys.  See users cookbook for details"
     begin
+      Chef::Log.warn("Fetch git ssh users")
       users = data_bag(new_resource.user_data_bag)
       ssh_keys = ''
+      Chef::Log.warn("Fetch git ssh users #{users}")
       users.each do |username|
+        Chef::Log.warn("Fetch git ssh keys for user #{username}")
         user = data_bag_item(new_resource.user_data_bag, username)
+        Chef::Log.warn("Fetch git ssh keys for user #{username} = #{user}")
         user[new_resource.ssh_keys_data_bag].each do |ssh_key|
+          Chef::Log.warn("Adding git ssh keys for user #{username} = #{user} with value #{ssh_key}")
           ssh_keys << ssh_key + "\n"
         end
       end
@@ -83,7 +86,6 @@ action_class do
       group new_resource.group
       mode "600"
       content ssh_keys
-      compile_time new_resource.compile_time
     end
   end
 
@@ -95,7 +97,6 @@ action_class do
         group new_resource.group
         cwd new_resource.home
         creates ::File.join(new_resource.home, "#{repository_name}.git")
-        compile_time new_resource.compile_time
       end
     end
   end
