@@ -93,7 +93,7 @@ action_class do
       owner new_resource.user
       group new_resource.group
       mode "600"
-      content ssh_keys
+      content lazy {ssh_keys}
     end
   end
 
