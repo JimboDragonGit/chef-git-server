@@ -66,7 +66,7 @@ action_class do
     # authorized_keys.  See users cookbook for details"
 
     file ::File.join(new_resource.home, ::File.join('.ssh', 'authorized_keys')) do
-      helpers ChefGitServer::SshKeysHelpers
+      include ChefGitServer::SshKeysHelpers
       owner new_resource.user
       group new_resource.group
       mode "600"
