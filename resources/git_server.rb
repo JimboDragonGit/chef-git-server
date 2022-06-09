@@ -10,8 +10,6 @@
 
 # To learn more about Custom Resources, see https://docs.chef.io/custom_resources/
 
-require 'fileutils'
-
 resource_name :git_server
 provides :git_server
 
@@ -44,6 +42,8 @@ end
 
 action_class do
 
+  require 'fileutils'
+  
   def create_server
     # Create git user on server
     user node['chef-git-server']['user'] do
