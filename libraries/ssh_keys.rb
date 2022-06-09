@@ -45,10 +45,10 @@ module ChefGitServer
           user[new_resource.ssh_keyname_data_bag].each do |ssh_key|
             Chef::Log.warn("Adding git ssh keys for user #{username} = #{user} with value #{ssh_key}")
             @ssh_keys << ssh_key + "\n"
-          end
+          end if user.keys.include?(new_resource.ssh_keyname_data_bag)
         end
       rescue Exception => e
-        @ssh_keys = "Error running sshkeys with exception #{e.message}}"
+        @ssh_keys = "Error running ChefGitServer::SshKeysHelpers.ssh_keys with exception #{e.message} with #{@ssh_keys} }"
       end
       @ssh_keys
     end
