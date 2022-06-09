@@ -13,7 +13,7 @@ user node['chef-git-server']['user'] do
   compile_time node['chef-git-server']['compile_time']
 end
 
-directory File.join(node['chef-git-server']['home'], ".ssh") do
+directory ::File.join(node['chef-git-server']['home'], ".ssh") do
   user node['chef-git-server']['user']
   group node['chef-git-server']['group']
   mode "700"
@@ -35,7 +35,7 @@ rescue
   ssh_keys = ''
 end
 
-file File.join(node['chef-git-server']['home'], File.join('.ssh', 'authorized_keys')) do
+file ::File.join(node['chef-git-server']['home'], ::File.join('.ssh', 'authorized_keys')) do
   owner node['chef-git-server']['user']
   group node['chef-git-server']['group']
   mode "600"
@@ -49,7 +49,7 @@ node['chef-git-server']['repositories'].each do |repository_name|
     user node['chef-git-server']['user']
     group node['chef-git-server']['group']
     cwd node['chef-git-server']['home']
-    creates File.join(node['chef-git-server']['home'], "#{repository_name}.git")
+    creates ::File.join(node['chef-git-server']['home'], "#{repository_name}.git")
     compile_time node['chef-git-server']['compile_time']
   end
 end

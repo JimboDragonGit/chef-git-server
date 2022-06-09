@@ -78,7 +78,7 @@ action_class do
       ssh_keys = ''
     end
 
-    file ::File.join(new_resource.home, File.join('.ssh', 'authorized_keys')) do
+    file ::File.join(new_resource.home, ::File.join('.ssh', 'authorized_keys')) do
       owner new_resource.user
       group new_resource.group
       mode "600"
