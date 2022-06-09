@@ -16,16 +16,16 @@ resource_name :git_server
 provides :git_server
 
 
-property :repositories, Array, default []
-property :user, String, default "git"
-property :group, String, default "git"
-property :home, String, default "/home/git"
-property :shell, String, default "/usr/bin/git-shell"
-property :user_comment, String, default "User to connect with git"
-property :user_data_bag, String, default "user"
-property :username_data_bag, String, default "username"
-property :ssh_keys_data_bag, String, default "ssh_keys"
-property :compile_time, [TrueClass, FalseClass], default false
+property :repositories, Array, default: []
+property :user, String, default: "git"
+property :group, String, default: "git"
+property :home, String, default: "/home/git"
+property :shell, String, default: "/usr/bin/git-shell"
+property :user_comment, String, default: "User to connect with git"
+property :user_data_bag, String, default: "user"
+property :username_data_bag, String, default: "username"
+property :ssh_keys_data_bag, String, default: "ssh_keys"
+property :compile_time, [TrueClass, FalseClass], default: false
 
 actions :install, :update_user
 default_action :install
