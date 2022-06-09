@@ -20,9 +20,8 @@ property :group, String, default: "git"
 property :home, String, default: "/home/git"
 property :shell, String, default: "/usr/bin/git-shell"
 property :user_comment, String, default: "User to connect with git"
-property :user_data_bag, String, default: "user"
-property :username_data_bag, String, default: "username"
-property :ssh_keys_data_bag, String, default: "ssh_keys"
+property :user_data_bag, String, default: "git_ssh_keys"
+property :ssh_keyname_data_bag, String, default: "public_keys"
 property :compile_time, [TrueClass, FalseClass], default: false
 
 actions :install, :update_user
@@ -75,7 +74,7 @@ action_class do
         # Chef::Log.warn("Fetch git ssh keys for user #{username} = key #{user.key}")
         Chef::Log.warn("Fetch git ssh keys for user #{username} = keys #{user.keys}")
         Chef::Log.warn("Fetch git ssh keys for user #{username} = values #{user.values}")
-        user[new_resource.ssh_keys_data_bag].each do |ssh_key|
+        user[new_resource.ssh_keyname_data_bag].each do |ssh_key|
           Chef::Log.warn("Adding git ssh keys for user #{username} = #{user} with value #{ssh_key}")
           ssh_keys << ssh_key + "\n"
         end
