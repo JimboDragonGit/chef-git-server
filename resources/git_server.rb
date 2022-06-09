@@ -46,19 +46,19 @@ action_class do
 
   def create_server
     # Create git user on server
-    user node['chef-git-server']['user'] do
+    user new_resource.user do
       manage_home true
-      comment node['chef-git-server']['user_comment']
-      home node['chef-git-server']['home']
-      shell node['chef-git-server']['shell']
-      compile_time node['chef-git-server']['compile_time']
+      comment new_resource.user_comment
+      home new_resource.home
+      shell new_resource.shell
+      compile_time new_resource.compile_time
     end
 
-    directory ::File.join(node['chef-git-server']['home'], ".ssh") do
-      user node['chef-git-server']['user']
-      group node['chef-git-server']['group']
+    directory ::File.join(new_resource.home, ".ssh") do
+      user new_resource.user
+      group new_resource.group
       mode "700"
-      compile_time node['chef-git-server']['compile_time']
+      compile_time new_resource.compile_time
     end
   end
 
@@ -66,11 +66,11 @@ action_class do
     # Pulls all SSH Keys out of users databag and adds to the git user
     # authorized_keys.  See users cookbook for details"
     begin
-      users = data_bag(node['chef-git-server']['user_data_bag'])
+      users = data_bag(new_resource.user_data_bag)
       ssh_keys = ''
       users.each do |username|
-        user = data_bag_item(node['chef-git-server']['user_data_bag'], username)
-        user[node['chef-git-server']['ssh_keys_data_bag']].each do |ssh_key|
+        user = data_bag_item(new_resource.user_data_bag, username)
+        user[new_resource.ssh_keys_data_bag].each do |ssh_key|
           ssh_keys << ssh_key + "\n"
         end
       end
@@ -78,24 +78,24 @@ action_class do
       ssh_keys = ''
     end
 
-    file ::File.join(node['chef-git-server']['home'], File.join('.ssh', 'authorized_keys')) do
-      owner node['chef-git-server']['user']
-      group node['chef-git-server']['group']
+    file ::File.join(new_resource.home, File.join('.ssh', 'authorized_keys')) do
+      owner new_resource.user
+      group new_resource.group
       mode "600"
       content ssh_keys
-      compile_time node['chef-git-server']['compile_time']
+      compile_time new_resource.compile_time
     end
   end
 
   def init_repo
     # Setup repositories defined as node attributes
-    node['chef-git-server']['repositories'].each do |repository_name|
+    new_resource.repositories.each do |repository_name|
       execute "git init --bare #{repository_name}.git" do
-        user node['chef-git-server']['user']
-        group node['chef-git-server']['group']
-        cwd node['chef-git-server']['home']
-        creates ::File.join(node['chef-git-server']['home'], "#{repository_name}.git")
-        compile_time node['chef-git-server']['compile_time']
+        user new_resource.user
+        group new_resource.group
+        cwd new_resource.home
+        creates ::File.join(new_resource.home, "#{repository_name}.git")
+        compile_time new_resource.compile_time
       end
     end
   end
