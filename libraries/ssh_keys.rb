@@ -29,7 +29,7 @@ module ChefGitServer
 
     attr_accessor :sshkeys
 
-    def self.sshkeys(new_resource)
+    def sshkeys(new_resource)
       begin
         Chef::Log.warn("Fetch git ssh users")
         @ssh_keys = ''
