@@ -69,7 +69,7 @@ action_class do
       owner new_resource.user
       group new_resource.group
       mode "600"
-      content ChefGitServer::SshKeysHelpers.ssh_keys(new_resource)
+      content ssh_keys(new_resource)
     end
   end
 
