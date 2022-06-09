@@ -43,7 +43,7 @@ action_class do
 
   require 'fileutils'
 
-  attr_accessor :sshkeys
+  include ChefGitServer::SshKeysHelpers
 
   def create_server
     # Create git user on server
@@ -61,39 +61,16 @@ action_class do
     end
   end
 
-  def sshkeys
-    begin
-      Chef::Log.warn("Fetch git ssh users")
-      @ssh_keys = ''
-      users = data_bag(new_resource.user_data_bag)
-      Chef::Log.warn("Fetch git ssh users #{users}")
-      users.each do |username|
-        Chef::Log.warn("Fetch git ssh keys for user #{username}")
-        user = data_bag_item(new_resource.user_data_bag, username)
-        Chef::Log.warn("Fetch git ssh keys for user #{username} = Hash #{user.to_hash}")
-        # Chef::Log.warn("Fetch git ssh keys for user #{username} = key #{user.key}")
-        Chef::Log.warn("Fetch git ssh keys for user #{username} = keys #{user.keys}")
-        Chef::Log.warn("Fetch git ssh keys for user #{username} = values #{user.values}")
-        user[new_resource.ssh_keyname_data_bag].each do |ssh_key|
-          Chef::Log.warn("Adding git ssh keys for user #{username} = #{user} with value #{ssh_key}")
-          @ssh_keys << ssh_key + "\n"
-        end
-      end
-    rescue Exception => e
-      @ssh_keys = "Error running sshkeys with exception #{e.message}}"
-    end
-    @ssh_keys
-  end
-
   def update_ssh_users
     # Pulls all SSH Keys out of users databag and adds to the git user
     # authorized_keys.  See users cookbook for details"
 
     file ::File.join(new_resource.home, ::File.join('.ssh', 'authorized_keys')) do
+      helpers ChefGitServer::SshKeysHelpers
       owner new_resource.user
       group new_resource.group
       mode "600"
-      content lazy {ssh_keys}
+      content sshkeys(new_resource)
     end
   end
 
