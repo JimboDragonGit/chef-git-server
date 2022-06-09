@@ -38,17 +38,17 @@ module ChefGitServer
         users.each do |username|
           Chef::Log.warn("Fetch git ssh keys for user #{username}")
           user = data_bag_item(new_resource.user_data_bag, username)
-          Chef::Log.warn("Fetch git ssh keys for user #{username} = Hash #{user.to_hash}")
+          Chef::Log.warn("Fetch git ssh keys for user #{username} = Hash #{user.to_hash} in #{new_resource.user_data_bag}/#{new_resource.ssh_keyname_data_bag}")
           # Chef::Log.warn("Fetch git ssh keys for user #{username} = key #{user.key}")
-          Chef::Log.warn("Fetch git ssh keys for user #{username} = keys #{user.keys}")
-          Chef::Log.warn("Fetch git ssh keys for user #{username} = values #{user.values}")
+          Chef::Log.warn("Fetch git ssh keys for user #{username} = keys #{user.keys} in #{new_resource.user_data_bag}/#{new_resource.ssh_keyname_data_bag}")
+          Chef::Log.warn("Fetch git ssh keys for user #{username} = values #{user.values} in #{new_resource.user_data_bag}/#{new_resource.ssh_keyname_data_bag}")
           user[new_resource.ssh_keyname_data_bag].each do |ssh_key|
-            Chef::Log.warn("Adding git ssh keys for user #{username} = #{user} with value #{ssh_key}")
+            Chef::Log.warn("Adding git ssh keys for user #{username} = #{user} with value #{ssh_key} in #{new_resource.user_data_bag}/#{new_resource.ssh_keyname_data_bag}")
             @ssh_keys << ssh_key + "\n"
           end if user.keys.include?(new_resource.ssh_keyname_data_bag)
         end
       rescue Exception => e
-        @ssh_keys = "Error running ChefGitServer::SshKeysHelpers.ssh_keys with exception #{e.message} with #{@ssh_keys} }"
+        @ssh_keys = "Error running ChefGitServer::SshKeysHelpers.ssh_keys with exception #{e.message} with #{ @ssh_keys } in #{new_resource.user_data_bag}/#{new_resource.ssh_keyname_data_bag}"
       end
       @ssh_keys
     end
