@@ -71,7 +71,7 @@ action_class do
       users.each do |username|
         Chef::Log.warn("Fetch git ssh keys for user #{username}")
         user = data_bag_item(new_resource.user_data_bag, username)
-        Chef::Log.warn("Fetch git ssh keys for user #{username} = #{user}")
+        Chef::Log.warn("Fetch git ssh keys for user #{username} = #{user.methods}")
         user[new_resource.ssh_keys_data_bag].each do |ssh_key|
           Chef::Log.warn("Adding git ssh keys for user #{username} = #{user} with value #{ssh_key}")
           ssh_keys << ssh_key + "\n"
