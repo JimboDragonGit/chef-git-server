@@ -43,7 +43,7 @@ end
 action_class do
 
   require 'fileutils'
-  
+
   def create_server
     # Create git user on server
     user node['chef-git-server']['user'] do
@@ -54,7 +54,7 @@ action_class do
       compile_time node['chef-git-server']['compile_time']
     end
 
-    directory File.join(node['chef-git-server']['home'], ".ssh") do
+    directory ::File.join(node['chef-git-server']['home'], ".ssh") do
       user node['chef-git-server']['user']
       group node['chef-git-server']['group']
       mode "700"
@@ -78,7 +78,7 @@ action_class do
       ssh_keys = ''
     end
 
-    file File.join(node['chef-git-server']['home'], File.join('.ssh', 'authorized_keys')) do
+    file ::File.join(node['chef-git-server']['home'], File.join('.ssh', 'authorized_keys')) do
       owner node['chef-git-server']['user']
       group node['chef-git-server']['group']
       mode "600"
@@ -94,7 +94,7 @@ action_class do
         user node['chef-git-server']['user']
         group node['chef-git-server']['group']
         cwd node['chef-git-server']['home']
-        creates File.join(node['chef-git-server']['home'], "#{repository_name}.git")
+        creates ::File.join(node['chef-git-server']['home'], "#{repository_name}.git")
         compile_time node['chef-git-server']['compile_time']
       end
     end
