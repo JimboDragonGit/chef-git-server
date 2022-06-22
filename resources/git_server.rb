@@ -43,8 +43,6 @@ end
 action_class do
   require 'fileutils'
 
-  include ChefGitServer::SshKeysHelpers
-
   def create_server
     # Create git user on server
     user new_resource.user do
