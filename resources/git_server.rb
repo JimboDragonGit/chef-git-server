@@ -13,18 +13,19 @@
 resource_name :git_server
 provides :git_server
 
-
 property :repositories, Array, default: []
-property :user, String, default: "git"
-property :group, String, default: "git"
-property :home, String, default: "/home/git"
-property :shell, String, default: "/usr/bin/git-shell"
-property :user_comment, String, default: "User to connect with git"
-property :user_data_bag, String, default: "git_ssh_keys"
-property :ssh_keyname_data_bag, String, default: "public_keys"
-property :compile_time, [TrueClass, FalseClass], default: false
+property :user, String, default: 'git'
+property :group, String, default: 'git'
+property :home, String, default: '/home/git'
+property :shell, String, default: '/usr/bin/git-shell'
+property :user_comment, String, default: 'User to connect with git'
+property :compile_time, [true, false], default: false
+property :userdatabag, String, default: 'users'
+property :userdatabagkey, String, default: 'public_key'
+property :secretdatabag, String, default: 'secret_databag_bag'
+property :secretdatabagitem, String, default: 'secret_item'
+property :secretdatabagkey, String, default: 'secret'
 
-actions :install, :update_user
 default_action :install
 
 load_current_value do |desired|
@@ -40,7 +41,6 @@ action :update_user do
 end
 
 action_class do
-
   require 'fileutils'
 
   include ChefGitServer::SshKeysHelpers
@@ -54,23 +54,35 @@ action_class do
       shell new_resource.shell
     end
 
-    directory ::File.join(new_resource.home, ".ssh") do
+    directory ::File.join(new_resource.home, '.ssh') do
       user new_resource.user
       group new_resource.group
-      mode "700"
+      mode '700'
     end
   end
 
   def update_ssh_users
     # Pulls all SSH Keys out of users databag and adds to the git user
-    # authorized_keys.  See users cookbook for details"
+    # authorized_keys.  See users cookbook for details'
 
-    file ::File.join(new_resource.home, ::File.join('.ssh', 'authorized_keys')) do
-      extend ChefGitServer::SshKeysHelpers
-      owner new_resource.user
-      group new_resource.group
-      mode "600"
-      content ssh_keys(new_resource)
+    users = data_bag(new_resource.userdatabag)
+    users.each do |login|
+      case ChefVault::Item.data_bag_item_type(new_resource.userdatabag, login)
+      when :normal
+        userinfo = data_bag_item(new_resource.userdatabag, login)
+      when :encrypted
+        userinfo = data_bag_item(new_resource.userdatabag, login, data_bag_item(new_resource.secretdatabag, new_resource.secretdatabagitem)[new_resource.secretdatabagkey])
+      when :vault
+        userinfo = ChefVault::Item.load(new_resource.userdatabag, login)
+      end
+
+      ssh_authorized_key login do
+        key userinfo[new_resource.userdatabagkey]['key']
+        keytype userinfo[new_resource.userdatabagkey]['keytype']
+        comment userinfo[new_resource.userdatabagkey]['comment']
+        user new_resource.user
+        group new_resource.group
+      end
     end
   end
 
