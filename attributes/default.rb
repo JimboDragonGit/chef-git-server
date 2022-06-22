@@ -8,7 +8,6 @@ default['chef-git-server']['group'] = 'git'
 default['chef-git-server']['home'] = '/home/git'
 default['chef-git-server']['shell'] = '/usr/bin/git-shell'
 default['chef-git-server']['user_comment'] = 'User to connect with git'
-default['chef-git-server']['userdatabag'] = 'users'
 default['chef-git-server']['userdatabagkey'] = 'public_key'
 default['chef-git-server']['compile_time'] = false
 default['chef-git-server']['userdatabag'] = 'users'
