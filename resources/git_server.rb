@@ -27,6 +27,7 @@ property :secretdatabagitem, String, default: 'secret_item'
 property :secretdatabagkey, String, default: 'secret'
 
 default_action :install
+unified_mode true
 
 load_current_value do |desired|
 end
