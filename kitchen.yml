@@ -34,6 +34,8 @@ platforms:
 suites:
 - name: default
   verifier:
+    input_files:
+    - compliance/inputs/repositories.yml
     inspec_tests:
     - compliance/profiles/chef-git-server
     - compliance/profiles/chef-git-repositories
