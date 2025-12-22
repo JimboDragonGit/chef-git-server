@@ -4,7 +4,7 @@
 #
 #
 
-git_server 'default' do
+chef_git_server 'default' do
   repositories node[cookbook_name]['repositories']
   user node[cookbook_name]['user']
   group node[cookbook_name]['group']

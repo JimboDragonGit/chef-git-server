@@ -1,0 +1,32 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "1. Setup Workstation Dependencies",
+      "type": "ruby_lsp",
+      "request": "launch",
+      "program": "bin/setup"
+    },
+    {
+      "name": "2. Run Chef Git Server run list With Chef",
+      "type": "ruby_lsp",
+      "request": "launch",
+      "program": "chef-client --chef-license accept --local-mode --runlist chef-git-server"
+    },
+    {
+      "name": "3. Test Workstation With Kitchen test",
+      "type": "ruby_lsp",
+      "request": "launch",
+      "program": "kitchen test"
+    },
+    {
+      "name": "3.a) List Workstation Suites With Kitchen",
+      "type": "ruby_lsp",
+      "request": "launch",
+      "program": "kitchen list"
+    },
+  ]
+}

@@ -1,0 +1,50 @@
+{
+	"folders": [
+		{
+			"name": "cookbooks/Workstation",
+			"path": "."
+		},
+	],
+	"settings": {
+		"ruby.interpreter.commandPath": "ruby",
+		"rubyLsp.rubyExecutablePath": "ruby",
+		"solargraph.useBundler": true,
+		"editor.tabsize": 2,
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+		},
+		"sshfs.configs": [
+			{
+				"name": "JimboServer",
+				"label": "JimboServer",
+				"group": "JimboDragon",
+				"host": "jimboserver.jimbodragon.qc.to",
+				"root": "/",
+				"privateKeyPath": "~/id_rsa",
+				"username": "root"
+			},
+			{
+				"name": "JimboRescue",
+				"label": "JimboRescue",
+				"group": "JimboDragon",
+				"host": "jimborescue.jimbodragon.qc.to",
+				"root": "/",
+				"privateKeyPath": "~/id_rsa",
+				"username": "root"
+			},
+			{
+				"name": "JimboWorkstation",
+				"label": "JimboWorkstation",
+				"group": "JimboDragon",
+				"host": "jimboworkstation.jimbodragon.qc.to",
+				"root": "/",
+				"privateKeyPath": "~/id_rsa",
+				"username": "root"
+			},
+		]
+	}
+}

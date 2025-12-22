@@ -1,0 +1,7 @@
+{
+  "editor.tabSize": 2,
+  "python.testing.pytestEnables": false,
+  "python.testing.unittestEnabled": true,
+  "ruby.interpreter.commandPath": "ruby",
+  "docker.host": "tcp://jimbodevserver.jimbodragon.qc.to:2375",
+}

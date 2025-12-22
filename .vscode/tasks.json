@@ -1,0 +1,65 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo from shell",
+      "type": "shell",
+      "command": "echo Hello"
+    },
+    {
+      "label": "List Environment Variables",
+      "type": "shell",
+      "command": "env"
+    },
+    {
+      "label": "Install Chef Workstation",
+      "type": "shell",
+      "command": "bin/install_chef_workstation_from_inside_vscode"
+    },
+    {
+      "label": "Initialize git repo",
+      "type": "shell",
+      "command": "git init && git add . && git commit -m 'Initialize Root Workstation'"
+    },
+    {
+      "label": "AWS Configure SSO",
+      "type": "shell",
+      "command": "aws configure sso --use-device-code --no-browser --no-cli-pager --no-cli-auto-prompt"
+    },
+    {
+      "label": "AWS SSO Login",
+      "type": "shell",
+      "command": "aws sso login --profile JimboAdmin --use-device-code --no-browser --no-cli-pager --no-cli-auto-prompt"
+    },
+    {
+      "label": "First things first, install the bundle",
+      "type": "shell",
+      "command": "bundle install"
+    },
+    {
+      "label": "Update root workspace bundle",
+      "type": "shell",
+      "command": "bundle update"
+    },
+    {
+      "label": "Setup Workstation",
+      "type": "shell",
+      "command": "bin/setup"
+    },
+  ],
+  "inputs": [
+    {
+      "type": "pickString",
+      "id": "physical_machines",
+      "description": "Fournit une machine physique accessible à cette espace de travail",
+      "options": [
+        "jimboserver",
+        "jimborescue",
+        "jimboworkstation"
+      ],
+      "default": "jimboserver"
+    }
+  ]
+}

@@ -8,3 +8,8 @@ version          '1.0.1'
 chef_version '>= 16.6.14'
 
 depends 'ssh_authorized_keys'
+
+gem 'unix-crypt'
+gem 'ruby-shadow'
+gem 'chef-vault'
+gem 'veil'

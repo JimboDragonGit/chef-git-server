@@ -10,8 +10,8 @@
 
 # To learn more about Custom Resources, see https://docs.chef.io/custom_resources/
 
-resource_name :git_server
-provides :git_server
+resource_name :chef_git_server
+provides :chef_git_server
 
 property :repositories, Array, default: []
 property :user, String, default: 'git'
