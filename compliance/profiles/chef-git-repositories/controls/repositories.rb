@@ -10,8 +10,8 @@ control 'repositories_control' do
   title 'Repository Control'
   desc 'This is the repository control. Test if repository exist as per define by repositories input'
 
-  repositories.each do |repository|
-    describe user('root') do
+  repositories.each do |repository_name|
+    describe directory(File.join('/home/git', "#{repository_name}.git")) do
       it { should exist }
     end
   end

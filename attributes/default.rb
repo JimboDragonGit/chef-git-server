@@ -2,7 +2,7 @@
 # Installation/System attributes
 
 # Array of repository names. Do not include '.git' extensions.
-default['chef-git-server']['repositories'] = []
+default['chef-git-server']['repositories'] = %w(example_a example_b)
 default['chef-git-server']['user'] = 'git'
 default['chef-git-server']['group'] = 'git'
 default['chef-git-server']['home'] = '/home/git'
