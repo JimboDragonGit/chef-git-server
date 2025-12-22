@@ -37,7 +37,7 @@ action :install do
   init_repo
 end
 
-action :update_user do
+action :update_users do
   update_ssh_users
 end
 

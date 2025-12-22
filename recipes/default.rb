@@ -18,4 +18,5 @@ chef_git_server 'default' do
   secretdatabag node[cookbook_name]['secretdatabag']
   secretdatabagitem node[cookbook_name]['secretdatabagitem']
   secretdatabagkey node[cookbook_name]['secretdatabagkey']
+  actions [:install, :update_users]
 end
