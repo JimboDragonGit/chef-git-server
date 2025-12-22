@@ -31,7 +31,7 @@
     {
       "label": "AWS SSO Login",
       "type": "shell",
-      "command": "aws sso login --profile JimboAdmin --use-device-code --no-browser --no-cli-pager --no-cli-auto-prompt"
+      "command": "aws sso login --profile default --use-device-code --no-browser --no-cli-pager --no-cli-auto-prompt"
     },
     {
       "label": "First things first, install the bundle",
@@ -55,11 +55,11 @@
       "id": "physical_machines",
       "description": "Fournit une machine physique accessible à cette espace de travail",
       "options": [
-        "jimboserver",
-        "jimborescue",
-        "jimboworkstation"
+        "Production",
+        "Test",
+        "Development"
       ],
-      "default": "jimboserver"
+      "default": "Production"
     }
   ]
 }

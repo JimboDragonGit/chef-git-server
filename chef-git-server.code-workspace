@@ -1,7 +1,7 @@
 {
 	"folders": [
 		{
-			"name": "cookbooks/Workstation",
+			"name": "cookbooks/chef-git-server",
 			"path": "."
 		},
 	],
@@ -19,28 +19,28 @@
 		},
 		"sshfs.configs": [
 			{
-				"name": "JimboServer",
-				"label": "JimboServer",
-				"group": "JimboDragon",
-				"host": "jimboserver.jimbodragon.qc.to",
+				"name": "Production",
+				"label": "Production",
+				"group": "GitServer",
+				"host": "prod.git.server",
 				"root": "/",
 				"privateKeyPath": "~/id_rsa",
 				"username": "root"
 			},
 			{
-				"name": "JimboRescue",
-				"label": "JimboRescue",
-				"group": "JimboDragon",
-				"host": "jimborescue.jimbodragon.qc.to",
+				"name": "Test",
+				"label": "Test",
+				"group": "GitServer",
+				"host": "test.git.server",
 				"root": "/",
 				"privateKeyPath": "~/id_rsa",
 				"username": "root"
 			},
 			{
-				"name": "JimboWorkstation",
-				"label": "JimboWorkstation",
-				"group": "JimboDragon",
-				"host": "jimboworkstation.jimbodragon.qc.to",
+				"name": "Development",
+				"label": "Development",
+				"group": "GitServer",
+				"host": "dev.git.server",
 				"root": "/",
 				"privateKeyPath": "~/id_rsa",
 				"username": "root"
