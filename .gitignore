@@ -23,3 +23,5 @@ Policyfile.lock.json
 
 .idea/
 
+# ignore data bags
+test/integration/default/data_bags/users
