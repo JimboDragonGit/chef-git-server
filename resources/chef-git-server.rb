@@ -75,12 +75,12 @@ action_class do
         userinfo = ChefVault::Item.load(new_resource.userdatabag, login)
       end
 
-      logger.debug("userdatabagkey = #{new_resource.userdatabagkey}")
-      logger.debug("userinfo[#{login}][#{new_resource.userdatabagkey}] = #{userinfo[new_resource.userdatabagkey]}")
-      logger.debug("userinfo[#{login}][ssh_comment] = #{userinfo[new_resource.userdatabagkey]['ssh_comment']}")
-      logger.debug("userinfo[#{login}][ssh_key_type] = #{userinfo[new_resource.userdatabagkey]['ssh_key_type']}")
-
+      logger.debug("#{login} :: userdatabagkey = #{new_resource.userdatabagkey}")
       userinfo[new_resource.userdatabagkey].each do |ssh_key|
+        logger.debug("ssh_key[#{login}][#{new_resource.userdatabagkey}] = #{ssh_key}")
+        logger.debug("ssh_key[#{login}][ssh_comment] = #{ssh_key['ssh_comment']}")
+        logger.debug("ssh_key[#{login}][ssh_key_type] = #{ssh_key['ssh_key_type']}")
+
         ssh_authorize_key login do
           key ssh_key['key']
           keytype ssh_key['ssh_key_type']
