@@ -80,12 +80,14 @@ action_class do
       logger.debug("userinfo[#{login}][ssh_comment] = #{userinfo[new_resource.userdatabagkey]['ssh_comment']}")
       logger.debug("userinfo[#{login}][ssh_key_type] = #{userinfo[new_resource.userdatabagkey]['ssh_key_type']}")
 
-      ssh_authorize_key login do
-        key userinfo[new_resource.userdatabagkey]['key']
-        keytype userinfo[new_resource.userdatabagkey]['ssh_key_type']
-        comment userinfo[new_resource.userdatabagkey]['ssh_comment']
-        user new_resource.user
-        group new_resource.group
+      userinfo[new_resource.userdatabagkey].each do |ssh_key|
+        ssh_authorize_key login do
+          key ssh_key['key']
+          keytype ssh_key['ssh_key_type']
+          comment ssh_key['ssh_comment']
+          user new_resource.user
+          group new_resource.group
+        end
       end
     end
   end
