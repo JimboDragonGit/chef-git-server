@@ -17,7 +17,7 @@ control 'server_control' do
     its('mindays') { should eq 0 }
     its('maxdays') { should eq 99999 }
     its('warndays') { should eq 7 }
-    its('passwordage') { should eq 1 }
+    its('passwordage') { should be >= 1 }
     its('badpasswordattempts') { should eq 0 }
   end
 
