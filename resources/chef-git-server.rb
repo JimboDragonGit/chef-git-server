@@ -17,7 +17,7 @@ property :repositories, Array, default: []
 property :user, String, default: 'git'
 property :group, String, default: 'git'
 property :home, String, default: '/home/git'
-property :shell, String, default: '/usr/bin/git-shell'
+property :shell, String, default: '/home/git/git-shell-commands'
 property :user_comment, String, default: 'User to connect with git'
 property :compile_time, [true, false], default: false
 property :userdatabag, String, default: 'users'
@@ -53,10 +53,65 @@ action_class do
       shell new_resource.shell
     end
 
+    file ::File.join(new_resource.home, 'git-shell-commands') do
+      content <<~EOB
+        #!/bin/bash
+        mkdir -p ~/logs
+        echo "$@" > ~/logs/access.log
+
+        log() {
+          echo "$1" >> ~/logs/access.log
+        }
+
+        is_it_for_git=$1
+        what_is_the_git_command=$2
+        git_command=$(echo "$2" | awk '{print $1}')
+        path_to_access=$(echo "$2" | awk '{print $2}' | cut -d "'" -f 2)
+
+        log "is_it_for_git = $is_it_for_git"
+        log "what_is_the_git_command = $what_is_the_git_command"
+        log "git_command = $git_command"
+        log "path_to_access = $path_to_access"
+
+        if [ "$is_it_for_git" == "-c" ]
+        then
+          log "It is for a command"
+          if [ "$git_command" == "git-upload-pack" ]
+          then
+            log "It is for an upload"
+            if [ -d $path_to_access ]
+            then
+              log "$path_to_access is valid"
+              valid_git="valid"
+            fi
+          fi
+        fi
+
+        if [ "$valid_git" == "valid" ]
+        then
+          log "Passing handler to git-shell"
+          /usr/bin/git-shell $@
+        else
+          echo Welcome to JimboDragon
+          echo SSH Login Not Authorized
+        fi
+
+      EOB
+      user new_resource.user
+      group new_resource.group
+      mode '555'
+    end
+
     directory ::File.join(new_resource.home, '.ssh') do
       user new_resource.user
       group new_resource.group
       mode '700'
+    end
+
+    directory ::File.join(new_resource.home, 'logs') do
+      user new_resource.user
+      group new_resource.group
+      mode '755'
     end
   end
 
