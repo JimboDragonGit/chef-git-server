@@ -80,8 +80,10 @@ action :first_commit do
 
     ruby_block "Clone from #{repository.name}" do
       block do
-        repository_info.clone_from_first_valid_remote do |login, login_group, user_cmd, working_dir, user_env, cmd_returns|
-          execute_user_command(login, login_group, user_cmd, working_dir, user_env, cmd_returns)
+        repository_info.clone_from_first_valid_remote do |login, login_group, user_cmds, working_dir, user_env, cmd_returns|
+          user_cmds.each do |command_to_execute|
+            execute_user_command(login, login_group, command_to_execute, working_dir, user_env, cmd_returns)
+          end
         end
       end
 
