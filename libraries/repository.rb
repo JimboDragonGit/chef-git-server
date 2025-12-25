@@ -93,13 +93,13 @@ module Workspace
                 yield(
                   developper.login,
                   developper.group,
+                  "git clone #{remote_url} #{clone_folder}",
                   [
-                    "git clone #{remote_url} #{clone_folder}",
                     "git remote add #{remote_name} #{remote_url}",
                     "git remote set-url origin #{repository.origin_url}",
                     "git push origin master"
                   ],
-                  parent_folder,
+                  clone_folder,
                   developper.user_env,
                   [0, 1]
                 )
