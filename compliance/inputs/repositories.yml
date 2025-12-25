@@ -4,6 +4,15 @@
 # Additional information can be found on the Chef InSpec Documentation site https://docs.chef.io/inspec/inputs/
 
 # Example Syntax:
-repositories:
+example_repos:
 - example_a
 - example_b
+
+github_repos:
+- github_repos_example
+
+chef_repos:
+- chef_repo_example
+
+rails_repos:
+- rails_repos_example

@@ -3,7 +3,16 @@
 # The Chef InSpec reference, with examples and extensive documentation, can be
 # found at https://docs.chef.io/inspec/resources/
 
-repositories = input('repositories', value: [])
+repositories = []
+
+%w(
+  example_repos
+  github_repos
+  chef_repos
+  rails_repos
+).each do |repo|
+  repositories += input(repo, value: [])
+end
 
 control 'repositories_control' do
   impact 0.7
