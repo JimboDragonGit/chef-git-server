@@ -10,6 +10,7 @@ repositories = []
   github_repos
   chef_repos
   rails_repos
+  jimbodragon_repos
 ).each do |repo|
   repositories += input(repo, value: [])
 end
