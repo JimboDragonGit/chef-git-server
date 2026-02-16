@@ -1,7 +1,7 @@
 
-module Workspace
+module ChefGitServer
   class RepoCollection
-    include Workspace::NodeDataBag
+    include ChefGitServer::NodeDataBag
 
     attr_reader :repositories
 

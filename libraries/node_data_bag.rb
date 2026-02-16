@@ -1,5 +1,5 @@
 
-module Workspace
+module ChefGitServer
   module NodeDataBag
     include Chef::DSL
     include Chef::DSL::Recipe
@@ -25,7 +25,7 @@ module Workspace
     end
 
     def run_context
-      Workspace::NodeDataBag.chef_run_context
+      ChefGitServer::NodeDataBag.chef_run_context
     end
 
     def node
@@ -33,7 +33,7 @@ module Workspace
     end
 
     def cookbook
-      Workspace::NodeDataBag.cookbook
+      ChefGitServer::NodeDataBag.cookbook
     end
 
     def get_users_data_bag

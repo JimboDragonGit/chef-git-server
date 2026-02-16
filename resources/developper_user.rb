@@ -1,12 +1,12 @@
 # To learn more about Custom Resources, see https://docs.chef.io/custom_resources/
 
-Workspace::NodeDataBag.set_run_context(self)
+ChefGitServer::NodeDataBag.set_run_context(self)
 
 resource_name :developper_user
 provides :developper_user
 
 property :developpername, String, name_property: true
-property :developper, Workspace::WorkUser, default: Workspace::WorkUser.new(ENV["USER"])
+property :developper, ChefGitServer::WorkUser, default: ChefGitServer::WorkUser.new(ENV["USER"])
 
 actions :sync, :delete_features
 
@@ -20,7 +20,7 @@ end
 
 action :set_repository do
   converge_if_changed do
-    repositories = Workspace::RepoCollection.new
+    repositories = ChefGitServer::RepoCollection.new
 
     local_repositories new_resource.developper.login do
       developper new_resource.developper

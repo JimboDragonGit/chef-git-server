@@ -1,7 +1,7 @@
 
-module Workspace
+module ChefGitServer
   class WorkUser
-    include Workspace::NodeDataBag
+    include ChefGitServer::NodeDataBag
 
     attr_reader :login, :chef_node
 

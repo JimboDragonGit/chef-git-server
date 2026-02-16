@@ -11,9 +11,9 @@
 
 require_relative 'node_data_bag'
 
-module Workspace
+module ChefGitServer
   module GitRepo
-    include Workspace::NodeDataBag
+    include ChefGitServer::NodeDataBag
 
     class NoMasterBranchAtRemote < RuntimeError; end
 

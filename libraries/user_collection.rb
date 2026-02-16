@@ -1,13 +1,13 @@
 
-module Workspace
+module ChefGitServer
   class UserCollection
-    include Workspace::NodeDataBag
+    include ChefGitServer::NodeDataBag
 
     attr_reader :users
 
     def initialize(category)
       @users = node['workspace'][category].map do |login|
-        Workspace::WorkUser.new(login)
+        ChefGitServer::WorkUser.new(login)
       end
     end
 

@@ -1,7 +1,7 @@
 
-module Workspace
+module ChefGitServer
   class Repository
-    include Workspace::GitRepo
+    include ChefGitServer::GitRepo
 
     class WithDevelopper
       include NodeDataBag
@@ -106,7 +106,7 @@ module Workspace
               else
                 developper.run_command!("git clone #{remote_url} #{clone_folder}", parent_folder) if status == true
               end
-            rescue Workspace::GitRepo::NoMasterBranchAtRemote => e
+            rescue ChefGitServer::GitRepo::NoMasterBranchAtRemote => e
               next
             end
           end
@@ -176,7 +176,7 @@ module Workspace
     def origin_verified?
       begin
         status = remote_repo_verified?(name, origin_url)
-      rescue Workspace::GitRepo::NoMasterBranchAtRemote => e
+      rescue ChefGitServer::GitRepo::NoMasterBranchAtRemote => e
         status = false
       end
       status
@@ -185,7 +185,7 @@ module Workspace
     def remote_verified?(remote_name)
       begin
         status = remote_repo_verified?(name, remotes[remote_name.to_sym])
-      rescue Workspace::GitRepo::NoMasterBranchAtRemote => e
+      rescue ChefGitServer::GitRepo::NoMasterBranchAtRemote => e
         status = false
       end
       status
@@ -195,7 +195,7 @@ module Workspace
       remotes.each do |remote_name, remote_url|
         begin
           status = remote_repo_verified?(name, remote_url)
-        rescue Workspace::GitRepo::NoMasterBranchAtRemote => e
+        rescue ChefGitServer::GitRepo::NoMasterBranchAtRemote => e
           status = false
         end
         return true if status == true
@@ -208,7 +208,7 @@ module Workspace
       remotes.each do |remote_name, remote_url|
         begin
           status = remote_repo_verified?(name, remote_url)
-        rescue Workspace::GitRepo::NoMasterBranchAtRemote => e
+        rescue ChefGitServer::GitRepo::NoMasterBranchAtRemote => e
           status = false
         end
         return false if status == false
