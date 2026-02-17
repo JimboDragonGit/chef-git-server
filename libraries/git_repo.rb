@@ -17,6 +17,14 @@ module ChefGitServer
 
     class NoMasterBranchAtRemote < RuntimeError; end
 
+    def clean_repo_message
+      <<~EOS
+        Your branch is up to date with 'origin/master'.
+        
+        nothing to commit, working tree clean
+      EOS
+    end
+
     def remote_repo_verified?(repo_name, repo_url)
       remote_ls = Mixlib::ShellOut.new("git ls-remote '#{repo_url}' 'master*'")
       if remote_ls.run_command.error? && remote_ls.stdout.empty? && remote_ls.stderr.empty?
@@ -27,6 +35,21 @@ module ChefGitServer
         true
       else
         raise NoMasterBranchAtRemote, "Error while verifying remote repository for #{repo_name}\n#{repo_url}\n::#{remote_ls.stdout}\n#{remote_ls.stderr}"
+      end
+    end
+
+    def has_something_to_commit?
+      status = Mixlib::ShellOut.new("git status").run_command
+      Chef::Log.warn("status is #{status.stdout}")
+      if status.error?
+        Chef::Log.warn("status has error with\nSTDOUT: #{status.stdout}\nSTDERR: #{status.stderr}")
+        false
+      elsif status.stdout.include?(clean_repo_message)
+        Chef::Log.warn("status is clean with #{status.stdout}")
+        false
+      else
+        Chef::Log.warn("New commit require as per #{status.stdout}")
+        true
       end
     end
   end

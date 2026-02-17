@@ -62,12 +62,14 @@ action :first_commit do
               user login
               group login_group
               mode '644'
+              action :create_if_missing
             end
 
-            execute_user_command(login, login_group, user_cmd[1], clone_to_sandbox, user_env, cmd_returns)
-            execute_user_command(login, login_group, user_cmd[2], clone_to_sandbox, user_env, cmd_returns)
-            execute_user_command(login, login_group, user_cmd[3], clone_to_sandbox, user_env, cmd_returns)
-
+            if repository.has_something_to_commit?
+              execute_user_command(login, login_group, user_cmd[1], clone_to_sandbox, user_env, cmd_returns)
+              execute_user_command(login, login_group, user_cmd[2], clone_to_sandbox, user_env, cmd_returns)
+              execute_user_command(login, login_group, user_cmd[3], clone_to_sandbox, user_env, cmd_returns)
+            end
             delete_folder clone_to_sandbox
           end
         end

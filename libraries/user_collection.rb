@@ -6,6 +6,7 @@ module ChefGitServer
     attr_reader :users
 
     def initialize(category)
+      Chef::Log.warn("Fetching developper category #{category}")
       @users = node['workspace'][category].map do |login|
         ChefGitServer::WorkUser.new(login)
       end

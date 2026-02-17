@@ -13,9 +13,14 @@ module ChefGitServer
       else
         node['chef-git-server']['repositories'].map do |repo_name|
           Chef::Log.debug("Fetching repo information of #{repo_name}")
+          assign_origin = if docker?
+            node['workspace']['config'][repo_name]['origin_for_docker']
+          else
+            node['workspace']['config'][repo_name]['origin']
+          end
           all_config_remote = node['workspace']['config'][repo_name]['remotes'].merge(
             {
-              origin: node['workspace']['config'][repo_name]['origin']
+              origin: assign_origin
             }
           )
           Repository.new(repo_name, all_config_remote)
