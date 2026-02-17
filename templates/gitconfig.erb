@@ -1,0 +1,27 @@
+[init]
+  defaultBranch = master
+[core]
+  editor = code --wait
+  autocrlf = false
+[log]
+  editor = code --wait
+  autocrlf = false
+[author]
+  name = <%= developper.firstname %> <%= developper.lastname %>
+  email = <%= developper.email %>
+[committer]
+  name = <%= developper.firstname %> <%= developper.lastname %>
+  email = <%= developper.email %>
+[user]
+  name = <%= developper.firstname %> <%= developper.lastname %>
+  email = <%= developper.email %>
+[pull]
+  rebase = false
+[push]
+  autoSetupRemote = true
+[safe]
+  directory = <%= developper.env_folder %>
+[worktree]
+  guessRemote = true
+[protocol "codecommit"]
+  allow = always

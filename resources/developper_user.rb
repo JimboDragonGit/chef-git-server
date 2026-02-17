@@ -63,43 +63,15 @@ action :generate_github_access do
       action :create_if_missing
     end
 
-    file from_home(".gitconfig") do
-      content <<~EOB
-      [init]
-        defaultBranch = master
-      [core]
-        editor = code --wait
-        autocrlf = false
-      [log]
-        editor = code --wait
-        autocrlf = false
-      [author]
-        name = #{new_resource.developper.firstname} #{new_resource.developper.lastname}
-        email = #{new_resource.developper.email}
-      [committer]
-        name = #{new_resource.developper.firstname} #{new_resource.developper.lastname}
-        email = #{new_resource.developper.email}
-      [user]
-        name = #{new_resource.developper.firstname} #{new_resource.developper.lastname}
-        email = #{new_resource.developper.email}
-      [pull]
-        rebase = false
-      [push]
-        autoSetupRemote = true
-      [safe]
-        directory = #{new_resource.developper.env_folder}
-      [worktree]
-        guessRemote = true
-      [protocol "codecommit"]
-        allow = always
-      [url "ssh://git@github.com"]
-        insteadOf = https://github.com
-
-      EOB
+    template from_home(".gitconfig") do
+      source 'gitconfig.erb'
       owner new_resource.developper.login
       group new_resource.developper.group
       mode "600"
-      action :create_if_missing
+      variables(
+        developper: new_resource.developper,
+        git_localhost_redirect: node['workspace']['git_localhost_redirect']
+      )
     end
 
     checkout_host = %w[
