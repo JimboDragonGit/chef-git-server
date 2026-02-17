@@ -4,6 +4,8 @@
 #
 #
 
+package 'git' if debian?
+
 chef_git_server 'default' do
   repositories node[cookbook_name]['repositories']
   user node[cookbook_name]['user']
