@@ -16,3 +16,9 @@ chef_repos:
 
 rails_repos:
 - rails_repos_example
+
+use_repository_group:
+- example_repos
+- github_repos
+- chef_repos
+- rails_repos

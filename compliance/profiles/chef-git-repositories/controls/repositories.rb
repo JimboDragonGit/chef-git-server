@@ -5,14 +5,8 @@
 
 repositories = []
 
-%w(
-  example_repos
-  github_repos
-  chef_repos
-  rails_repos
-  additional_repos
-).each do |repo|
-  repositories += input(repo, value: [])
+input('use_repository_group', value: []).each do |repo|
+  repositories += input(repo, value: nil)
 end
 
 control 'repositories_control' do

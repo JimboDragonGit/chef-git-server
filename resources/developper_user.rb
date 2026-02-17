@@ -99,10 +99,12 @@ action :generate_github_access do
       action :create_if_missing
     end
 
-    %w[
-      localhost
+    checkout_host = %w[
       github.com
-    ].each do |host|
+    ]
+    checkout_host << 'localhost' unless docker?
+
+    checkout_host.each do |host|
       ssh_known_hosts_entry host do
         owner new_resource.developper.login
         group new_resource.developper.group
