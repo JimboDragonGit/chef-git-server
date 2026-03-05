@@ -9,7 +9,4 @@ chef_version '>= 16.6.14'
 
 depends 'ssh_authorized_keys', '~> 1.0'
 
-gem 'unix-crypt'
-gem 'ruby-shadow'
-gem 'chef-vault'
-gem 'veil'
+gemspec

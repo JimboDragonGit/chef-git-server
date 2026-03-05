@@ -40,7 +40,7 @@ to manage Chef projects.
                        )
   # spec.bindir        = "exe"
   # spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  # spec.require_paths = [ "features/support" ]
+  spec.require_paths = [ "librairies" ]
 
   # Runtime dependencies for the project itself
   spec.add_runtime_dependency "inifile", "~> 3" # '~> 3.0'

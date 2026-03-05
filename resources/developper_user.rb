@@ -9,11 +9,11 @@ property :developpername, String, name_property: true
 property :developper, ChefGitServer::WorkUser, default: ChefGitServer::WorkUser.new(ENV["USER"])
 property :file_from_cookbook, String, default: 'chef-git-server'
 
-actions :sync, :delete_features
+actions :set_repository, :generate_github_access, :generate_aws_access
 
 unified_mode true
 
-default_action :sync
+default_action :set_repository
 
 load_current_value do |default_values|
   # current_value_does_not_exist! if
