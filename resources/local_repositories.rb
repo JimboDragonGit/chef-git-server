@@ -65,7 +65,7 @@ action :first_commit do
               action :create_if_missing
             end
 
-            if repository_info.has_something_to_commit?
+            if repository_info.has_something_to_commit?(clone_to_sandbox)
               execute_user_command(login, login_group, user_cmd[1], clone_to_sandbox, user_env, cmd_returns)
               execute_user_command(login, login_group, user_cmd[2], clone_to_sandbox, user_env, cmd_returns)
               execute_user_command(login, login_group, user_cmd[3], clone_to_sandbox, user_env, cmd_returns)
