@@ -93,7 +93,6 @@ module ChefGitServer
         else
           developper.run_command!("git status", clone_into(clone_into_folder))
         end
-       end
       end
 
       def clone_from_first_valid_remote(clone_into_folder = nil)
