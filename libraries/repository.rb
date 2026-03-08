@@ -80,6 +80,22 @@ module ChefGitServer
       def not_commited_yet?(clone_into_folder = nil)
       end
 
+      def has_something_to_commit?(clone_into_folder = nil)
+        if block_given?
+          yield(
+            developper.login,
+            developper.group,
+            "git status",
+            clone_into(clone_into_folder),
+            developper.user_env,
+            [0, 1]
+          )
+        else
+          developper.run_command!("git status", clone_into(clone_into_folder))
+        end
+       end
+      end
+
       def clone_from_first_valid_remote(clone_into_folder = nil)
         clone_folder = clone_into(clone_into_folder)
         unless Dir.exist?(clone_folder)
