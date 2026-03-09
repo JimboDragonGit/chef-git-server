@@ -56,7 +56,9 @@ module ChefGitServer
 
     def run_command!(command, working_dir)
       Chef::Log.warn("Hoping that the command '#{command}' does not failed at #{working_dir}")
-      Mixlib::ShellOut.new(command, cwd: working_dir, environment: user_env).run_command.error!
+      command_to_execute = Mixlib::ShellOut.new(command, cwd: working_dir, environment: user_env)
+      command_to_execute.run_command.error!
+      command_to_execute
     end
 
     private

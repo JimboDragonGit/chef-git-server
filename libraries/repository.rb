@@ -6,6 +6,11 @@ module ChefGitServer
     class WithDevelopper
       include NodeDataBag
 
+      class MissingPlaygroundFolder < StandardError; end
+      class UnexpectedGitStatus < StandardError; end
+      class NotOnABranch < StandardError; end
+      class NotOnMasterBranch < StandardError; end
+
       attr_reader :repository, :developper
 
       def initialize(login, repo)
@@ -80,7 +85,7 @@ module ChefGitServer
       def not_commited_yet?(clone_into_folder = nil)
       end
 
-      def has_something_to_commit?(clone_into_folder = nil)
+      def has_something_to_commit_on_first_commit?(clone_into_folder = nil)
         if block_given?
           yield(
             developper.login,
@@ -88,11 +93,17 @@ module ChefGitServer
             "git status",
             clone_into(clone_into_folder),
             developper.user_env,
-            [0, 1]
+            [0]
           )
         else
           raise(MissingPlaygroundFolder, "Missing playground folder for #{repository.name}") if clone_into_folder.nil?
-          developper.run_command!("git status", clone_into_folder)
+          command_to_execute = developper.run_command!("git status", clone_into(clone_into_folder))
+          raise NotOnABranch, "Expected to be on a branch with 'git status' command : #{command_to_execute.stdout}" if command_to_execute.stdout.include?("Not currently on any branch")
+          raise NotOnMasterBranch, "Expected to be on master branch with 'git status' command : #{command_to_execute.stdout}" unless command_to_execute.stdout.include?("On branch master")
+          return false if command_to_execute.stdout.include?("nothing to commit")
+          return true if command_to_execute.stdout.include?("No commits yet")
+          return true if command_to_execute.stdout.include?("nothing added to commit but untracked files present")
+          raise UnexpectedGitStatus, "Unexpected output for 'git status' command : #{command_to_execute.stdout}"
         end
       end
 

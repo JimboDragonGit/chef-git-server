@@ -65,7 +65,11 @@ action :first_commit do
               action :create_if_missing
             end
 
-            if repository_info.has_something_to_commit?(clone_to_sandbox)
+            repository_info.has_something_to_commit_on_first_commit?(clone_to_sandbox) do |l, lg, uc, wd, ue, cr|
+              execute_user_command(l, lg, uc, wd, ue, cr, is_live = true)
+            end
+
+            if repository_info.has_something_to_commit_on_first_commit?(clone_to_sandbox)
               execute_user_command(login, login_group, user_cmd[1], clone_to_sandbox, user_env, cmd_returns)
               execute_user_command(login, login_group, user_cmd[2], clone_to_sandbox, user_env, cmd_returns)
               execute_user_command(login, login_group, user_cmd[3], clone_to_sandbox, user_env, cmd_returns)
@@ -136,12 +140,13 @@ action :sync do
 end
 
 action_class do
-  def execute_user_command(login, login_group, user_cmd, working_dir, user_env, cmd_returns)
+  def execute_user_command(login, login_group, user_cmd, working_dir, user_env, cmd_returns, is_live=false)
     execute user_cmd do
       cwd working_dir
       environment user_env
       user login
       group login_group
+      live_stream is_live
       action :run
       returns cmd_returns if cmd_returns
     end
