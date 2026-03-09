@@ -91,7 +91,8 @@ module ChefGitServer
             [0, 1]
           )
         else
-          developper.run_command!("git status", clone_into(clone_into_folder))
+          raise(MissingPlaygroundFolder, "Missing playground folder for #{repository.name}") if clone_into_folder.nil?
+          developper.run_command!("git status", clone_into_folder)
         end
       end
 
