@@ -19,7 +19,6 @@ property :group, String, default: 'git'
 property :home, String, default: '/home/git'
 property :shell, String, default: '/home/git/git-shell-commands'
 property :user_comment, String, default: 'User to connect with git'
-property :compile_time, [true, false], default: false
 property :userdatabag, String, default: 'users'
 property :userdatabagkey, String, default: 'public_key'
 property :secretdatabag, String, default: 'secret_databag_bag'
@@ -43,6 +42,10 @@ end
 
 action_class do
   require 'fileutils'
+
+  def compile_time?
+    new_resource.compile_time
+  end
 
   def create_server
     # Create git user on server
@@ -106,6 +109,7 @@ action_class do
       user new_resource.user
       group new_resource.group
       mode '700'
+      action :nothing
     end
 
     directory ::File.join(new_resource.home, 'logs') do
@@ -142,6 +146,7 @@ action_class do
           comment ssh_key['ssh_comment']
           user new_resource.user
           group new_resource.group
+          compile_time compile_time?
         end
       end
     end
