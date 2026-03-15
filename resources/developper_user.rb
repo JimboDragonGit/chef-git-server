@@ -23,8 +23,8 @@ action :set_repository do
   converge_if_changed do
     repositories = ChefGitServer::RepoCollection.new
 
-    local_repositories new_resource.developper.login do
-      developper new_resource.developper
+    local_repositories developper.login do
+      developper developper
       repo_collection repositories
       action [ :fetch, :first_commit, :sync ]
     end
@@ -36,17 +36,17 @@ action :generate_github_access do
     create_directory '.ssh'
 
     file from_home(".ssh/id_rsa") do
-      content new_resource.developper.ssh_private_key
-      owner new_resource.developper.login
-      group new_resource.developper.group
+      content developper.ssh_private_key
+      owner developper.login
+      group developper.group
       mode "600"
       action :create_if_missing
     end
 
     file from_home(".ssh/id_rsa.pub") do
-      content new_resource.developper.ssh_public_key
-      owner new_resource.developper.login
-      group new_resource.developper.group
+      content developper.ssh_public_key
+      owner developper.login
+      group developper.group
       mode "600"
       action :create_if_missing
     end
@@ -57,19 +57,19 @@ action :generate_github_access do
         HostName github.com
         User git
       EOB
-      owner new_resource.developper.login
-      group new_resource.developper.group
+      owner developper.login
+      group developper.group
       mode "600"
       action :create_if_missing
     end
 
     template from_home(".gitconfig") do
       source 'gitconfig.erb'
-      owner new_resource.developper.login
-      group new_resource.developper.group
+      owner developper.login
+      group developper.group
       mode "600"
       variables(
-        developper: new_resource.developper,
+        developper: developper,
         git_localhost_redirect: node['workspace']['git_localhost_redirect']
       )
     end
@@ -85,8 +85,8 @@ action :generate_github_access do
 
     checkout_host.each do |host|
       ssh_known_hosts_entry host do
-        owner new_resource.developper.login
-        group new_resource.developper.group
+        owner developper.login
+        group developper.group
         file_location from_home(".ssh/known_host")
         compile_time true
         retries 5
@@ -103,31 +103,53 @@ action :generate_aws_access do
 
     cookbook_file from_home(".aws/config") do
       source "profile.d/root/aws/config"
-      owner new_resource.developper.login
-      group new_resource.developper.group
+      owner developper.login
+      group developper.group
       mode "600"
       action :create_if_missing
     end
 
     cookbook_file from_home(".aws/credentials") do
       source "profile.d/root/aws/credentials"
-      owner new_resource.developper.login
-      group new_resource.developper.group
+      owner developper.login
+      group developper.group
       mode "600"
       action :create_if_missing
     end
   end
 end
 
+action :generate_aauthorized_keys do
+  converge_if_changed do
+    developper.authorized_ssh_users.each do |ssh_user, ssh_key|
+      logger.debug("authorized_ssh_users[#{ssh_user}][#{developper.login}] = #{ssh_key}")
+      logger.debug("authorized_ssh_users[#{ssh_user}][ssh_comment] = #{ssh_key['ssh_comment']}")
+      logger.debug("authorized_ssh_users[#{ssh_user}][ssh_key_type] = #{ssh_key['ssh_key_type']}")
+
+      ssh_authorize_key ssh_user do
+        key ssh_key['key']
+        keytype ssh_key['ssh_key_type']
+        comment ssh_key['ssh_comment']
+        user developper.login
+        group developper.group
+      end
+    end
+  end
+end
+
 action_class do
+  def developper
+    new_resource.developper
+  end
+
   def from_home(to_path)
-    ::File.join(new_resource.developper.home, to_path)
+    ::File.join(developper.home, to_path)
   end
 
   def create_directory(folder_from_home)
     directory from_home(folder_from_home) do
-      owner new_resource.developper.login
-      group new_resource.developper.group
+      owner developper.login
+      group developper.group
       mode "755"
       action :create
     end

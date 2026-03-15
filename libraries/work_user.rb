@@ -3,6 +3,8 @@ module ChefGitServer
   class WorkUser
     include ChefGitServer::NodeDataBag
 
+    class UnknownWorkUserSetting < RuntimeError; end
+
     attr_reader :login, :chef_node
 
     def initialize(login)
@@ -13,40 +15,16 @@ module ChefGitServer
       private_info.key?(__method__) ? private_info[__method__] : Dir.mktmpdir
     end
 
-    def env_folder
-      private_info[__method__]
-    end
-
-    def group
-      private_info[__method__]
-    end
-
-    def email
-      private_info[__method__]
-    end
-
-    def firstname
-      private_info[__method__]
-    end
-
-    def lastname
-      private_info[__method__]
-    end
-
     def user_env
       private_info['env']
     end
 
-    def ssh_private_key
-      private_info[__method__]
-    end
-
-    def ssh_public_key
-      private_info[__method__]
-    end
-
     def home
       user_env['HOME']
+    end
+
+    def authorized_ssh_users
+      private_info[__method__]
     end
 
     def run_command(command, working_dir)
@@ -71,6 +49,14 @@ module ChefGitServer
       when :vault
         ::ChefVault::Item.load(userdatabag, login).to_h
       end
+    end
+
+    def method_missing(method_name, *argv, &block)
+      found_settings = [method_name, method_name.to_s].select do |mn|
+        private_info.key?(mn)
+      end
+      return found_settings.first if found_method.any?
+      raise UnknownWorkUserSetting, "method_name #{method_name}(with #{argv.count} parameters) is unavailable"
     end
   end
 end
