@@ -6,8 +6,8 @@ resource_name :local_repositories
 provides :local_repositories
 
 property :developpername, String, name_property: true
-property :developper, ChefGitServer::WorkUser, default: ChefGitServer::WorkUser.new(ENV['USER'], nil)
-property :repo_collection, ChefGitServer::RepoCollection, default: ChefGitServer::RepoCollection.new(nil)
+property :developper, ChefGitServer::WorkUser, default: ChefGitServer::WorkUser.new(ENV['USER'], self)
+property :repo_collection, ChefGitServer::RepoCollection, default: ChefGitServer::RepoCollection.new(self)
 
 actions :sync, :delete_features
 
@@ -104,7 +104,7 @@ end
 action :sync do
   directory new_resource.developper.env_folder do
     user new_resource.developper.login
-    group new_resource.developper.group
+    group new_resource.developper.login_group
     mode '0755'
     action :create
   end
@@ -125,7 +125,7 @@ action :sync do
 
     git repository_info.clone_into do
       user repository_info.developper.login
-      group repository_info.developper.group
+      group repository_info.developper.login_group
       revision 'master'
       environment repository_info.developper.user_env
       repository repository.origin_url

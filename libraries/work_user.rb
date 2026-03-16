@@ -2,6 +2,7 @@
 module ChefGitServer
   class WorkUser
     include ChefGitServer::NodeDataBag
+    include ChefGitServer::ChefContextHelpers
 
     class UninitializeLogin < RuntimeError; end
     class UnknownWorkUserSetting < RuntimeError; end
@@ -9,7 +10,7 @@ module ChefGitServer
     attr_reader :login, :chef_node
 
     def initialize(username, new_context)
-      assigned_run_context(new_context) unless new_context.nil?
+      @chef_run_context = new_context
       @login = username
     end
 
@@ -25,8 +26,32 @@ module ChefGitServer
       user_env['HOME']
     end
 
-    def group
+    def login_group
       private_info['group']
+    end
+
+    def ssh_private_key
+      private_info[__method__]
+    end
+
+    def ssh_public_key
+      private_info[__method__]
+    end
+
+    def firstname
+      private_info[__method__]
+    end
+
+    def lastname
+      private_info[__method__]
+    end
+
+    def email
+      private_info[__method__]
+    end
+
+    def env_folder
+      private_info[__method__]
     end
 
     def validate_login!
@@ -45,10 +70,15 @@ module ChefGitServer
       command_to_execute
     end
 
+    protected
+    def retrieve_setting(setting_name)
+      private_info[setting_name]
+    end
+
     private
     def private_info
-      Chef::Log.warn("login = '#{login}'")
-      Chef::Log.warn("userdatabag = '#{userdatabag}'")
+      # Chef::Log.warn("login = '#{login}'")
+      # Chef::Log.warn("userdatabag = '#{userdatabag}'")
       validate_login!
       case ::ChefVault::Item.data_bag_item_type(userdatabag, login)
       when :normal

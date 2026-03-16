@@ -15,7 +15,7 @@ provides :chef_git_server
 
 property :repositories, Array, default: []
 property :user, String, default: 'git'
-property :group, String, default: 'git'
+property :login_group, String, default: 'git'
 property :home, String, default: '/home/git'
 property :shell, String, default: '/home/git/git-shell-commands'
 property :user_comment, String, default: 'User to connect with git'
@@ -101,20 +101,20 @@ action_class do
 
       EOB
       user new_resource.user
-      group new_resource.group
+      group new_resource.login_group
       mode '555'
     end
 
     directory ::File.join(new_resource.home, '.ssh') do
       user new_resource.user
-      group new_resource.group
+      group new_resource.login_group
       mode '700'
       action :nothing
     end
 
     directory ::File.join(new_resource.home, 'logs') do
       user new_resource.user
-      group new_resource.group
+      group new_resource.login_group
       mode '755'
     end
   end
@@ -145,7 +145,7 @@ action_class do
           keytype ssh_key['ssh_key_type']
           comment ssh_key['ssh_comment']
           user new_resource.user
-          group new_resource.group
+          group new_resource.login_group
           compile_time compile_time?
         end
       end
@@ -157,7 +157,7 @@ action_class do
     new_resource.repositories.each do |repository_name|
       execute "git init --bare #{repository_name}.git" do
         user new_resource.user
-        group new_resource.group
+        group new_resource.login_group
         cwd new_resource.home
         creates ::File.join(new_resource.home, "#{repository_name}.git")
       end

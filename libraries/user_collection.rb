@@ -2,16 +2,15 @@
 module ChefGitServer
   class UserCollection
     include ChefGitServer::NodeDataBag
+    include ChefGitServer::ChefContextHelpers
 
     attr_reader :users
 
     def initialize(category, new_context)
-      unless new_context.nil?
-        assigned_run_context(new_context)
-        Chef::Log.warn("Fetching developper category #{category}")
-        @users = node['workspace'][category].map do |login|
-          ChefGitServer::WorkUser.new(login, new_context)
-        end
+      @chef_run_context = new_context
+      Chef::Log.warn("Fetching developper category #{category}")
+      @users = node['workspace'][category].map do |login|
+        ChefGitServer::WorkUser.new(login, new_context)
       end
     end
 

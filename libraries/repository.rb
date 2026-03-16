@@ -31,7 +31,7 @@ module ChefGitServer
         if block_given?
           yield(
             developper.login,
-            developper.group,
+            developper.login_group,
             git_push_cmd,
             clone_into(clone_into_folder),
             developper.user_env,
@@ -48,7 +48,7 @@ module ChefGitServer
           if block_given?
             yield(
               developper.login,
-              developper.group,
+              developper.login_group,
               git_push_cmd,
               clone_into(clone_into_folder),
               developper.user_env,
@@ -66,7 +66,7 @@ module ChefGitServer
           if block_given?
             yield(
               developper.login,
-              developper.group,
+              developper.login_group,
               git_pull_cmd,
               clone_into(clone_into_folder),
               developper.user_env,
@@ -89,7 +89,7 @@ module ChefGitServer
         if block_given?
           yield(
             developper.login,
-            developper.group,
+            developper.login_group,
             "git status",
             clone_into(clone_into_folder),
             developper.user_env,
@@ -119,7 +119,7 @@ module ChefGitServer
               if block_given? && status == true
                 yield(
                   developper.login,
-                  developper.group,
+                  developper.login_group,
                   "git clone #{remote_url} #{clone_folder}",
                   [
                     "git remote add #{remote_name} #{remote_url}",
@@ -152,7 +152,7 @@ module ChefGitServer
         if block_given?
           yield(
             developper.login,
-            developper.group,
+            developper.login_group,
             [git_clone_cmd, git_add_cmd, git_commit_cmd, git_push_cmd],
             developper.sandbox_folder,
             developper.user_env,

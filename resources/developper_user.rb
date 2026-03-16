@@ -6,7 +6,7 @@ resource_name :developper_user
 provides :developper_user
 
 property :developpername, String, name_property: true
-property :developper, ChefGitServer::WorkUser, default: ChefGitServer::WorkUser.new(ENV["USER"], nil)
+property :developper, ChefGitServer::WorkUser, default: ChefGitServer::WorkUser.new(ENV["USER"], self)
 property :file_from_cookbook, String, default: 'chef-git-server'
 
 actions :set_repository, :generate_github_access, :generate_aws_access
@@ -40,7 +40,7 @@ action :generate_github_access do
     file from_home(".ssh/id_rsa") do
       content dev_user.ssh_private_key
       owner dev_user.login
-      group dev_user.group
+      group dev_user.login_group
       mode "600"
       action :create_if_missing
     end
@@ -48,7 +48,7 @@ action :generate_github_access do
     file from_home(".ssh/id_rsa.pub") do
       content dev_user.ssh_public_key
       owner dev_user.login
-      group dev_user.group
+      group dev_user.login_group
       mode "600"
       action :create_if_missing
     end
@@ -60,7 +60,7 @@ action :generate_github_access do
         User git
       EOB
       owner dev_user.login
-      group dev_user.group
+      group dev_user.login_group
       mode "600"
       action :create_if_missing
     end
@@ -68,7 +68,7 @@ action :generate_github_access do
     template from_home(".gitconfig") do
       source 'gitconfig.erb'
       owner dev_user.login
-      group dev_user.group
+      group dev_user.login_group
       mode "600"
       variables(
         developper: dev_user,
@@ -88,7 +88,7 @@ action :generate_github_access do
     checkout_host.each do |host|
       ssh_known_hosts_entry host do
         owner dev_user.login
-        group dev_user.group
+        group dev_user.login_group
         file_location from_home(".ssh/known_host")
         compile_time true
         retries 5
@@ -106,7 +106,7 @@ action :generate_aws_access do
     cookbook_file from_home(".aws/config") do
       source "profile.d/root/aws/config"
       owner dev_user.login
-      group dev_user.group
+      group dev_user.login_group
       mode "600"
       action :create_if_missing
     end
@@ -114,7 +114,7 @@ action :generate_aws_access do
     cookbook_file from_home(".aws/credentials") do
       source "profile.d/root/aws/credentials"
       owner dev_user.login
-      group dev_user.group
+      group dev_user.login_group
       mode "600"
       action :create_if_missing
     end
@@ -133,7 +133,7 @@ action :generate_authorized_keys do
         keytype ssh_key['ssh_key_type']
         comment ssh_key['ssh_comment']
         user dev_user.login
-        group dev_user.group
+        group dev_user.login_group
       end
     end
   end
@@ -151,7 +151,7 @@ action_class do
   def create_directory(folder_from_home)
     directory from_home(folder_from_home) do
       owner dev_user.login
-      group dev_user.group
+      group dev_user.login_group
       mode "755"
       action :create
     end

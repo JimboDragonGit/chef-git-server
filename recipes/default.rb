@@ -9,7 +9,7 @@ package 'git' if debian?
 chef_git_server 'default' do
   repositories node[cookbook_name]['repositories']
   user node[cookbook_name]['user']
-  group node[cookbook_name]['group']
+  login_group node[cookbook_name]['group']
   home node[cookbook_name]['home']
   shell node[cookbook_name]['shell']
   user_comment node[cookbook_name]['user_comment']

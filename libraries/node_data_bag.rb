@@ -30,10 +30,6 @@ module ChefGitServer
     #   @chef_cookbook ||= cookbook_obj
     # end
 
-    def assigned_run_context(new_context)
-      @chef_run_context = new_context
-    end
-
     # def run_context
     #   ChefGitServer::NodeDataBag.chef_run_context
     # end
@@ -80,21 +76,21 @@ module ChefGitServer
       node['chef-git-server'][__method__.to_s]
     end
 
-    def node
-      @chef_run_context.node
-    end
+    # def node
+    #   @chef_run_context.node
+    # end
 
-    def run_context
-      @chef_run_context.run_context
-    end
+    # def run_context
+    #   @chef_run_context.run_context
+    # end
 
-    def cookbook_name
-      @chef_run_context.cookbook_name
-    end
+    # def cookbook_name
+    #   @chef_run_context.cookbook_name
+    # end
 
-    def recipe_name
-      @chef_run_context.recipe_name
-    end
+    # def recipe_name
+    #   @chef_run_context.recipe_name
+    # end
 
     private
     def found_chef_settings(setting_name)
