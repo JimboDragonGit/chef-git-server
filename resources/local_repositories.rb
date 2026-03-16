@@ -1,13 +1,13 @@
 # To learn more about Custom Resources, see https://docs.chef.io/custom_resources/
 
-ChefGitServer::NodeDataBag.set_run_context(self)
+# ChefGitServer::NodeDataBag.set_run_context(self)
 
 resource_name :local_repositories
 provides :local_repositories
 
 property :developpername, String, name_property: true
-property :developper, ChefGitServer::WorkUser, default: ChefGitServer::WorkUser.new(ENV['USER'])
-property :repo_collection, ChefGitServer::RepoCollection, default: ChefGitServer::RepoCollection.new
+property :developper, ChefGitServer::WorkUser, default: ChefGitServer::WorkUser.new(ENV['USER'], nil)
+property :repo_collection, ChefGitServer::RepoCollection, default: ChefGitServer::RepoCollection.new(nil)
 
 actions :sync, :delete_features
 

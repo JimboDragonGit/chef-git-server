@@ -3,12 +3,14 @@ module ChefGitServer
   class WorkUser
     include ChefGitServer::NodeDataBag
 
+    class UninitializeLogin < RuntimeError; end
     class UnknownWorkUserSetting < RuntimeError; end
 
     attr_reader :login, :chef_node
 
-    def initialize(login)
-      @login = login
+    def initialize(username, new_context)
+      assigned_run_context(new_context) unless new_context.nil?
+      @login = username
     end
 
     def sandbox_folder
@@ -23,8 +25,12 @@ module ChefGitServer
       user_env['HOME']
     end
 
-    def authorized_ssh_users
-      private_info[__method__]
+    def group
+      private_info['group']
+    end
+
+    def validate_login!
+      raise UninitializeLogin, "Need a login for WorkUser" if login.nil?
     end
 
     def run_command(command, working_dir)
@@ -41,6 +47,9 @@ module ChefGitServer
 
     private
     def private_info
+      Chef::Log.warn("login = '#{login}'")
+      Chef::Log.warn("userdatabag = '#{userdatabag}'")
+      validate_login!
       case ::ChefVault::Item.data_bag_item_type(userdatabag, login)
       when :normal
         data_bag_item(userdatabag, login)
@@ -51,12 +60,15 @@ module ChefGitServer
       end
     end
 
-    def method_missing(method_name, *argv, &block)
-      found_settings = [method_name, method_name.to_s].select do |mn|
-        private_info.key?(mn)
-      end
-      return found_settings.first if found_method.any?
-      raise UnknownWorkUserSetting, "method_name #{method_name}(with #{argv.count} parameters) is unavailable"
-    end
+    # def method_missing(method_name, *argv, &block)
+    #   method_message = "ChefGitServer::WorkUser method #{method_name}(with #{argv.count} parameters)"
+    #   Chef::Log.debug(method_message)
+    #   found_settings = [method_name, method_name.to_s].select do |mn|
+    #     private_info.key?(mn)
+    #   end
+    #   return found_settings.first if found_settings.any?
+    #   return node['chef-git-server'][method_name.to_s] unless node['chef-git-server'][method_name.to_s].nil?
+    #   raise UnknownWorkUserSetting, [method_message, caller].join("\n")
+    # end
   end
 end

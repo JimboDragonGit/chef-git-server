@@ -5,10 +5,13 @@ module ChefGitServer
 
     attr_reader :users
 
-    def initialize(category)
-      Chef::Log.warn("Fetching developper category #{category}")
-      @users = node['workspace'][category].map do |login|
-        ChefGitServer::WorkUser.new(login)
+    def initialize(category, new_context)
+      unless new_context.nil?
+        assigned_run_context(new_context)
+        Chef::Log.warn("Fetching developper category #{category}")
+        @users = node['workspace'][category].map do |login|
+          ChefGitServer::WorkUser.new(login, new_context)
+        end
       end
     end
 
