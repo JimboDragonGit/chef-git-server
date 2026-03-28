@@ -19,5 +19,11 @@ module ChefGitServer
         yield(developper) if block_given?
       end
     end
+
+    def map
+      users.map do |developper|
+        yield(developper) if block_given?
+      end
+    end
   end
 end
