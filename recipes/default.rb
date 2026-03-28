@@ -4,7 +4,11 @@
 #
 #
 
-package 'git' if debian?
+apt_update if debian?
+
+package 'git'
+
+Chef::Log.warn("INstallation de git COmpleter parce que #{debian?}")
 
 chef_git_server 'default' do
   repositories node[cookbook_name]['repositories']

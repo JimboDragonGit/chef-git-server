@@ -163,4 +163,10 @@ action_class do
       end
     end
   end
+
+  def git_cmd
+    if Mixlib:ShellOut.new('git --help').run_command.error?
+      '/usr/bin/git'
+    end
+  end
 end

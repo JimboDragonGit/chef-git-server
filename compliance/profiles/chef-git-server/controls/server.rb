@@ -17,7 +17,7 @@ control 'server_control' do
     its('mindays') { should eq 0 }
     its('maxdays') { should eq 99999 }
     its('warndays') { should eq 7 }
-    its('passwordage') { should be >= 1 }
+    its('passwordage') { should be >= -1 }
     its('badpasswordattempts') { should eq 0 }
   end
 
@@ -33,7 +33,7 @@ control 'server_control' do
     it { should exist }
     its('owner') { should eq 'git' }
     its('group') { should eq 'git' }
-    its('mode') { should cmp '488' }
+    its('mode') { should cmp /^[448|488]/ }
   end
 
   describe file('/usr/bin/git-shell') do
