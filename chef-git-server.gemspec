@@ -35,12 +35,12 @@ to manage Chef projects.
   spec.license       = "Apache-2.0"
 
   spec.files         = (
-                          Dir.glob("libraries/*.rb") +
+                          Dir.glob("lib/*.rb") +
                           [ "README.md", "LICENSE", "CHANGELOG.md" ]
                        )
   # spec.bindir        = "exe"
   # spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = [ "libraries" ]
+  spec.require_paths = [ "lib" ]
 
   # Runtime dependencies for the project itself
   spec.add_runtime_dependency "inifile", "~> 3" # '~> 3.0'
