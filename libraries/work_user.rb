@@ -15,7 +15,7 @@ module ChefGitServer
     end
 
     def sandbox_folder
-      private_info.key?(__method__) ? private_info[__method__] : Dir.mktmpdir
+      private_info.key?(__method__) ? private_info[__method__] : tmp_sandbox
     end
 
     def user_env
@@ -28,6 +28,10 @@ module ChefGitServer
 
     def login_group
       private_info['group']
+    end
+
+    def locale
+      private_info[__method__]
     end
 
     def ssh_private_key
@@ -58,6 +62,10 @@ module ChefGitServer
       raise UninitializeLogin, "Need a login for WorkUser" if login.nil?
     end
 
+    def python_folder_for_version(version_of_python)
+      ::File.join(home, "atelier", "python", version_of_python)
+    end
+
     def run_command(command, working_dir)
       Chef::Log.warn("Executing the command '#{command}'")
       Mixlib::ShellOut.new(command, cwd: working_dir, environment: user_env).run_command
@@ -76,6 +84,10 @@ module ChefGitServer
     end
 
     private
+    def tmp_sandbox
+      @tmp_sandbox ||= Dir.mktmpdir
+    end
+
     def private_info
       # Chef::Log.warn("login = '#{login}'")
       # Chef::Log.warn("userdatabag = '#{userdatabag}'")
