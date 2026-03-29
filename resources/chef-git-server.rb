@@ -148,7 +148,7 @@ action_class do
           group new_resource.login_group
           compile_time compile_time?
         end
-      end
+      end if userinfo.key?(new_resource.userdatabagkey)
     end
   end
 

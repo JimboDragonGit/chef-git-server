@@ -25,7 +25,7 @@ module ChefGitServer
               origin: assign_origin
             }
           )
-          Repository.new(repo_name, all_config_remote)
+          Repository.new(repo_name, all_config_remote, node['workspace']['config'][repo_name]['origin_branch'])
         end
       end
     end

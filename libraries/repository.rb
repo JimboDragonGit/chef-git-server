@@ -27,7 +27,7 @@ module ChefGitServer
       end
 
       def push_to_origin(clone_into_folder = nil)
-        git_push_cmd = "git push origin master"
+        git_push_cmd = "git push origin #{repository.origin_branch}"
         if block_given?
           yield(
             developper.login,
@@ -44,7 +44,7 @@ module ChefGitServer
 
       def push_all_remotes(clone_into_folder = nil)
         repository.remotes.each do |remote_name, remote_url|
-          git_push_cmd = "git push #{remote_name} master"
+          git_push_cmd = "git push #{remote_name} #{repository.origin_branch}"
           if block_given?
             yield(
               developper.login,
@@ -62,7 +62,7 @@ module ChefGitServer
 
       def pull_all_remotes(clone_into_folder = nil)
         repository.remotes.each do |remote_name, remote_url|
-          git_pull_cmd = "git pull #{remote_name} master"
+          git_pull_cmd = "git pull #{remote_name} #{repository.origin_branch}"
           if block_given?
             yield(
               developper.login,
@@ -124,7 +124,7 @@ module ChefGitServer
                   [
                     "git remote add #{remote_name} #{remote_url}",
                     "git remote set-url origin #{repository.origin_url}",
-                    "git push origin master"
+                    "git push origin #{repository.origin_branch}"
                   ],
                   clone_folder,
                   developper.user_env,
@@ -182,10 +182,11 @@ module ChefGitServer
       end
     end
 
-    attr_reader :name, :remotes
-    def initialize(repo_name, remote_list)
+    attr_reader :name, :remotes, :origin_branch
+    def initialize(repo_name, remote_list, origin_branch = "master")
       @name = repo_name
       @remotes = remote_list
+      @origin_branch = origin_branch
     end
 
     def with_developper(developper)
