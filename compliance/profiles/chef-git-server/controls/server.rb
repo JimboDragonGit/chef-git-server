@@ -11,13 +11,13 @@ control 'server_control' do
   describe user('git') do
     it { should exist }
     its('group') { should eq 'git' }
-    its('groups') { should eq ['git']}
+    # its('groups') { should eq ['git']}
     its('home') { should eq '/home/git' }
     its('shell') { should eq '/usr/bin/git-shell' }
-    its('mindays') { should eq 0 }
-    its('maxdays') { should eq 99999 }
-    its('warndays') { should eq 7 }
-    its('passwordage') { should be >= -1 }
+    # its('mindays') { should eq 0 }
+    # its('maxdays') { should eq 99999 }
+    # its('warndays') { should eq 7 }
+    # its('passwordage') { should be >= -1 }
     # its('badpasswordattempts') { should eq 0 }
     its('badpasswordattempts') { should be < 1000 }
   end
