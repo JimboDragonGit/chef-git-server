@@ -62,8 +62,12 @@ module ChefGitServer
       raise UninitializeLogin, "Need a login for WorkUser" if login.nil?
     end
 
+    def pyenv_root
+      ::File.join(home, ".pyenv")
+    end
+
     def python_folder_for_version(version_of_python)
-      ::File.join(home, "atelier", "python", version_of_python)
+      ::File.join(pyenv_root, "versions", version_of_python)
     end
 
     def run_command(command, working_dir)

@@ -25,5 +25,11 @@ module ChefGitServer
         yield(developper) if block_given?
       end
     end
+
+    def select
+      users.select do |developper|
+        yield(developper) if block_given?
+      end
+    end
   end
 end
