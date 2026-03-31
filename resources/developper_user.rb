@@ -89,7 +89,7 @@ action :generate_github_access do
       ssh_known_hosts_entry host do
         owner dev_user.login
         group dev_user.login_group
-        file_location from_home(".ssh/known_host")
+        file_location from_home(".ssh/known_hosts")
         compile_time true
         retries 5
         retry_delay 3
