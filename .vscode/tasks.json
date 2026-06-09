@@ -39,7 +39,7 @@
       "command": "bundle install"
     },
     {
-      "label": "Update root workspace bundle",
+      "label": "Update Chef Git Server workspace bundle",
       "type": "shell",
       "command": "bundle update"
     },
