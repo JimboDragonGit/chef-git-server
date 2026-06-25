@@ -76,26 +76,26 @@ action :generate_github_access do
       )
     end
 
-    checkout_host = %w[
-      github.com
-    ]
-    checkout_host << 'localhost' unless docker?
+    # checkout_host = %w[
+    #   github.com
+    # ]
+    # checkout_host << 'localhost' unless docker?
 
-    node['workspace']['additionnal_ssh_known_host'].each do |additionnal_host|
-      checkout_host << additionnal_host
-    end
+    # node['workspace']['additionnal_ssh_known_host'].each do |additionnal_host|
+    #   checkout_host << additionnal_host
+    # end
 
-    checkout_host.each do |host|
-      ssh_known_hosts_entry host do
-        owner dev_user.login
-        group dev_user.login_group
-        file_location from_home(".ssh/known_hosts")
-        compile_time true
-        retries 5
-        retry_delay 3
-        action :create
-      end
-    end
+    # checkout_host.each do |host|
+    #   ssh_known_hosts_entry host do
+    #     owner dev_user.login
+    #     group dev_user.login_group
+    #     file_location from_home(".ssh/known_hosts")
+    #     compile_time true
+    #     retries 5
+    #     retry_delay 3
+    #     action :create
+    #   end
+    # end
   end
 end
 
