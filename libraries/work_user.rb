@@ -70,6 +70,14 @@ module ChefGitServer
       ::File.join(pyenv_root, "versions", version_of_python)
     end
 
+    def ruby_root
+      ::File.join(home, ".rvm")
+    end
+
+    def ruby_folder_for_version(version_of_ruby)
+      ::File.join(ruby_root, "versions", version_of_ruby)
+    end
+
     def run_command(command, working_dir)
       Chef::Log.warn("Executing the command '#{command}'")
       Mixlib::ShellOut.new(command, cwd: working_dir, environment: user_env).run_command
